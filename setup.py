@@ -24,12 +24,19 @@ setup(name='collective.cmfeditionsdexteritycompat',
       zip_safe=False,
       install_requires=[
         'setuptools',
-        'five.grok'
+        'five.grok',
+        'z3c.autoinclude'
       ],
       
       extras_require = {
         'test': [
             'plone.app.testing',
+            'plone.app.dexterity',
+            'plone.app.versioningbehavior',
+            'Plone',
+            'Products.CMFEditions',
+            'Products.CMFDiffTool',            
+            
         ]
       },
       
