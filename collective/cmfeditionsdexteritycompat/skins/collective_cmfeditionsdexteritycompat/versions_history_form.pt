@@ -213,7 +213,13 @@
           <metal:use_body use-macro="view_macro" />
         </tal:preview>
         <tal:nopreview condition="not:view_macro">
-          <div i18n:translate="">Preview is not available.</div>
+          <tal:block define="version_view context/@@version-view|nothing">
+            
+            <div tal:condition="version_view" tal:replace="structure version_view" />            
+        
+            <div tal:condition="not:version_view" i18n:translate="">Preview is not available.</div>
+          
+          </tal:block>
         </tal:nopreview>
       </tal:block>
 

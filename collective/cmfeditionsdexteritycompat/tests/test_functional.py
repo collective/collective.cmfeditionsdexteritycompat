@@ -72,17 +72,15 @@ class FunctionalTestCase(unittest.TestCase):
         
     def test_versions_history_form(self):        
         old_text = self.obj1.text        
-        new_text = 'Some other text for object 1.'
-        
         old_title = self.obj1.title
+        
+        new_text = 'Some other text for object 1.'        
         new_title = 'My special new title for object 1'
                 
         self._login_browser(TEST_USER_NAME, TEST_USER_PASSWORD)
-        self.browser.open(self.obj1.absolute_url() + '/edit')
-        self.browser.getControl(label='Title').value = new_text
-        self.browser.getControl(label='Text').value = new_title
-        
-        
+        self.browser.open(self.obj1.absolute_url() + '/edit')        
+        self.browser.getControl(label='Title').value = new_title
+        self.browser.getControl(label='Text').value = new_text                
         self.browser.getControl(name='form.buttons.save').click()       
         
         self._assert_versions_history_form(0, old_title, old_text)
@@ -92,7 +90,6 @@ class FunctionalTestCase(unittest.TestCase):
         self.browser.open(
             self.obj1.absolute_url() + '/versions_history_form?version_id=%s' % version_id
         )
-        self._dump_to_file()
         self.assertTrue('Working Copy' in self.browser.contents) 
         self.assertTrue(
             ('/obj1/versions_history_form?version_id=%s' % version_id) in self.browser.contents
@@ -106,4 +103,3 @@ class FunctionalTestCase(unittest.TestCase):
         )
         self.assertTrue(str(text) in self.browser.contents)
         
-    
