@@ -20,8 +20,8 @@ class FunctionalTestCase(unittest.TestCase):
         self.browser.handleErrors = False
         setRoles(self.portal, TEST_USER_ID, ['Manager', 'Member'])
         self.portal.invokeFactory(
-            TEST_CONTENT_TYPE_ID, 
-            'obj1', 
+            type_name=TEST_CONTENT_TYPE_ID, 
+            id='obj1', 
             title=u'Object 1 Title', 
             description=u'Description of obect number 1',
             text=u'Object 1 some footext.',            
@@ -29,9 +29,7 @@ class FunctionalTestCase(unittest.TestCase):
         self.obj1 = self.portal['obj1']
         transaction.commit()
     
-    def tearDown(self):
-        setRoles(self.portal, TEST_USER_ID, TEST_USER_ROLES)
-        transaction.commit()        
+
     
     def _dump_to_file(self):
         f = open('/tmp/a.html', 'w')
@@ -70,7 +68,7 @@ class FunctionalTestCase(unittest.TestCase):
         self.assertFalse(self.obj1.description in self.browser.contents)                
         self.assertTrue(self.obj1.text in self.browser.contents)    
         
-    def test_versions_history_form(self):        
+    def test_versions_history_form_should_work_with_dexterity_content(self):        
         old_text = self.obj1.text        
         old_title = self.obj1.title
         
@@ -83,23 +81,48 @@ class FunctionalTestCase(unittest.TestCase):
         self.browser.getControl(label='Text').value = new_text                
         self.browser.getControl(name='form.buttons.save').click()       
         
-        self._assert_versions_history_form(0, old_title, old_text)
-        self._assert_versions_history_form(1, new_title, new_text)
+        self._assert_versions_history_form(0, self.obj1.getId(), old_title, old_text)
+        self._assert_versions_history_form(1, self.obj1.getId(), new_title, new_text)
 
-    def _assert_versions_history_form(self, version_id, title, text):
+    def _assert_versions_history_form(self, version_id, obj_id, title, text):
         self.browser.open(
-            self.obj1.absolute_url() + '/versions_history_form?version_id=%s' % version_id
+            '%s/%s/versions_history_form?version_id=%s' % (self.portal_url, obj_id, version_id)
         )
         self.assertTrue('Working Copy' in self.browser.contents) 
         self.assertTrue(
-            ('/obj1/versions_history_form?version_id=%s' % version_id) in self.browser.contents
+            ('/%s/versions_history_form?version_id=%s' % (obj_id, version_id)) in self.browser.contents
         )
         self.assertTrue('Working Copy' in self.browser.contents) 
         self.assertTrue('Revert to this revision' in self.browser.contents)
-        self.assertTrue('/obj1/version_diff?version_id1' in self.browser.contents)
+        self.assertTrue(('/%s/version_diff?version_id1' % obj_id) in self.browser.contents)
         self.assertTrue(('Preview of Revision %s' % version_id) in self.browser.contents)
         self.assertTrue(
             ('<h1 class="documentFirstHeading">%s</h1>' % str(title)) in self.browser.contents
         )
         self.assertTrue(str(text) in self.browser.contents)
+    
+    def test_versions_history_form_should_work_with_archetypes_content(self):
+        old_text = self.obj1.text        
+        old_title = self.obj1.title
         
+        new_text = 'Some other text for page 1.'        
+        new_title = 'My special new title for page 1'        
+        
+        self.portal.invokeFactory(
+            type_name='Document', 
+            id='page1', 
+            title=old_title, 
+            text=old_text,            
+        )
+        page = self.portal['page1']
+        transaction.commit()
+        
+        self._login_browser(TEST_USER_NAME, TEST_USER_PASSWORD)
+        
+        self.browser.open(page.absolute_url() + '/edit')        
+        self.browser.getControl(label='Title').value = new_title
+        self.browser.getControl(label='Body Text').value = new_text                
+        self.browser.getControl(name='form.button.save').click()       
+                
+        self._assert_versions_history_form(0, page.getId(), old_title, old_text)
+        self._assert_versions_history_form(1, page.getId(), new_title, new_text)        
