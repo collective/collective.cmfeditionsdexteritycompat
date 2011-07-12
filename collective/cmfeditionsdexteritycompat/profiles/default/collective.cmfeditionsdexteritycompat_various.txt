@@ -1,0 +1,2 @@
+Este arquivo deve estar presente para que o passo de importação collective.cmfeditionsdexteritycompat.import_various
+seja executado.

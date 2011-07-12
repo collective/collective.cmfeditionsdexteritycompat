@@ -1,0 +1,7 @@
+<metadata>
+  <description>collective.cmfeditionsdexteritycompat</description>
+  <version>1</version>
+  <dependencies>
+    <dependency>profile-Products.CMFEditions:CMFEditions</dependency>
+  </dependencies>
+</metadata>

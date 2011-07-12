@@ -1,0 +1,29 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup" 
+    i18n_domain="collective.cmfeditionsdexteritycompat">
+    
+    <!-- Pefil default. -->
+    
+    <genericsetup:registerProfile
+        name="default"
+        title="collective.cmfeditionsdexteritycompat"
+        directory="profiles/default"
+        description="collective.cmfeditionsdexteritycompat"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+     />
+    
+    <genericsetup:importStep
+        name="collective.cmfeditionsdexteritycompat.import_various"
+        title="collective.cmfeditionsdexteritycompat.import_various"
+        description="collective.cmfeditionsdexteritycompat.import_various"
+        handler="collective.cmfeditionsdexteritycompat.setuphandlers.import_various">
+        
+        <depends name="actions"/>
+        <depends name="workflow"/>
+        <depends name="typeinfo"/>
+        <depends name="toolset"/>
+        
+    </genericsetup:importStep>    
+    
+</configure>    
