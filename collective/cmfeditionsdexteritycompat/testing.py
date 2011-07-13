@@ -7,7 +7,7 @@ from plone.app.testing import (IntegrationTesting, FunctionalTesting, PLONE_FIXT
     PloneSandboxLayer)
 from plone.dexterity.fti import DexterityFTI
 
-TEST_CONTENT_TYPE_ID = 'TestContentType'
+TEST_CONTENT_TYPE_ID = 'MyTestContentType'
 
 class PackageLayer(PloneSandboxLayer):
 
@@ -59,9 +59,8 @@ class PackageLayer(PloneSandboxLayer):
             list(portal_repository.getVersionableContentTypes()) + [TEST_CONTENT_TYPE_ID]
         )
         for policy_id in DEFAULT_POLICIES:
-            portal_repository.addPolicyForContentType(TEST_CONTENT_TYPE_ID, policy_id)        
-        
+            portal_repository.addPolicyForContentType(TEST_CONTENT_TYPE_ID, policy_id)            
 
 FIXTURE = PackageLayer()
 INTEGRATION_TESTING = IntegrationTesting(bases=(FIXTURE,), name='%s:Integration' % PACKAGE_NAME)
-FUNCTIONAL_TESTING = FunctionalTesting(bases=(FIXTURE,), name='%s:Integration' % PACKAGE_NAME)
+FUNCTIONAL_TESTING = FunctionalTesting(bases=(FIXTURE,), name='%s:Functional' % PACKAGE_NAME)

@@ -29,7 +29,9 @@ class FunctionalTestCase(unittest.TestCase):
         self.obj1 = self.portal['obj1']
         transaction.commit()
     
-
+    def tearDown(self):
+        del self.portal['obj1']
+        transaction.commit()
     
     def _dump_to_file(self):
         f = open('/tmp/a.html', 'w')
@@ -125,4 +127,6 @@ class FunctionalTestCase(unittest.TestCase):
         self.browser.getControl(name='form.button.save').click()       
                 
         self._assert_versions_history_form(0, page.getId(), old_title, old_text)
-        self._assert_versions_history_form(1, page.getId(), new_title, new_text)        
+        self._assert_versions_history_form(1, page.getId(), new_title, new_text)
+        
+        del self.portal[page.getId()]                
