@@ -1,12 +1,14 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.0.1dev'
+version = '0.1b1dev'
 
 setup(name='collective.cmfeditionsdexteritycompat',
       version=version,
       description='',
-      long_description=open("README.txt").read(),
+      long_description=open(os.path.join("collective", "cmfeditionsdexteritycompat", "README.txt")).read() \
+        + '\n\n'
+        + open(os.path.join("docs", "HISTORY.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Framework :: Plone",
