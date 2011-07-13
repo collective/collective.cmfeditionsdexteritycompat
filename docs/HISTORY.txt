@@ -1,10 +1,10 @@
 Changelog
 =========
 
-0.1b2 (unreleased)
+0.1b2 (2011-07-13)
 ------------------
 
-- Nothing changed yet.
+- Fixed tests.
 
 
 0.1b1 (2011-07-12)
