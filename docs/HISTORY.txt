@@ -4,7 +4,7 @@ Changelog
 0.1b3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed tests again.
 
 
 0.1b2 (2011-07-13)
