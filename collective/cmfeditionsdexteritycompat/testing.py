@@ -7,7 +7,7 @@ from plone.app.testing import (IntegrationTesting, FunctionalTesting, PLONE_FIXT
     PloneSandboxLayer)
 from plone.dexterity.fti import DexterityFTI
 
-TEST_CONTENT_TYPE_ID = 'MyTestContentType'
+TEST_CONTENT_TYPE_ID = 'TestContentType'
 
 class PackageLayer(PloneSandboxLayer):
 

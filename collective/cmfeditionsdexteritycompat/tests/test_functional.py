@@ -27,11 +27,6 @@ class FunctionalTestCase(unittest.TestCase):
             text=u'Object 1 some footext.',            
         )
         self.obj1 = self.portal['obj1']
-        transaction.commit()
-    
-    def tearDown(self):
-        del self.portal['obj1']
-        transaction.commit()
     
     def _dump_to_file(self):
         f = open('/tmp/a.html', 'w')
@@ -51,6 +46,7 @@ class FunctionalTestCase(unittest.TestCase):
         self.assertRaises(LookupError, self.browser.getControl, *args, **kwargs)
     
     def test_content_core_view(self):
+        transaction.commit()
         self._login_browser(TEST_USER_NAME, TEST_USER_PASSWORD)
    
         self.browser.open(self.obj1.absolute_url() + '/@@content-core')
@@ -61,6 +57,7 @@ class FunctionalTestCase(unittest.TestCase):
         self.assertTrue(self.obj1.text in self.browser.contents)   
    
     def test_version_view(self):
+        transaction.commit()
         self._login_browser(TEST_USER_NAME, TEST_USER_PASSWORD)
         
         self.browser.open(self.obj1.absolute_url() + '/@@version-view?version_id=0')
@@ -76,7 +73,8 @@ class FunctionalTestCase(unittest.TestCase):
         
         new_text = 'Some other text for object 1.'        
         new_title = 'My special new title for object 1'
-                
+
+        transaction.commit()
         self._login_browser(TEST_USER_NAME, TEST_USER_PASSWORD)
         self.browser.open(self.obj1.absolute_url() + '/edit')        
         self.browser.getControl(label='Title').value = new_title
@@ -129,4 +127,3 @@ class FunctionalTestCase(unittest.TestCase):
         self._assert_versions_history_form(0, page.getId(), old_title, old_text)
         self._assert_versions_history_form(1, page.getId(), new_title, new_text)
         
-        del self.portal[page.getId()]                
