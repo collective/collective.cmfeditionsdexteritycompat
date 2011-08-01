@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1b5 (unreleased)
+0.1b5 (2011-08-01)
 ------------------
 
 - Do not extract the "content-core" div from the default view HTML code anymore in "@@content-core".
