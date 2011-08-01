@@ -4,7 +4,7 @@ Changelog
 0.1b4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed bug: Unauthorized error when content type has custom view set up with Grok.
 
 
 0.1b3 (2011-07-20)
