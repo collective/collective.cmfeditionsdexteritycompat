@@ -1,0 +1,23 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="plone.app.dexterity">
+    
+  <browser:page
+      for="plone.dexterity.interfaces.IDexterityItem"
+      name="content-core"
+      class="plone.dexterity.browser.view.DefaultView"
+      template="itemcontentcore.pt"
+      permission="zope2.View"
+      />
+
+  <browser:page
+      for="plone.dexterity.interfaces.IDexterityContainer"
+      name="content-core"
+      class="plone.dexterity.browser.view.DefaultView"
+      template="containercontentcore.pt"
+      permission="zope2.View"
+      />
+      
+</configure>          
