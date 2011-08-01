@@ -1,30 +1,14 @@
 from zope.publisher.interfaces import NotFound
 from plone.namedfile.utils import set_headers, stream_data
-from kss.core.BeautifulSoup import BeautifulSoup
 from Products.CMFCore.utils import getToolByName
 import re
 from zope.component import getMultiAdapter
 from zope.interface import Interface
 from five import grok
-
-class ContentCore(grok.View):
-    grok.context(Interface)
-    grok.require('zope2.View')
-    grok.name('content-core')    
-
-    def render(self, *args, **kwargs):
-        view = getMultiAdapter((self.context, self.request), name='view')
-        content = view()        
-        soup = BeautifulSoup(content)
-        element_id = 'content-core'
-        tag = soup.find('div', id=element_id)
-        if tag is None:
-            raise RuntimeError, 'Result content did not contain <div id="%s">' % element_id
-        # now we send it back to the client
-        return unicode(tag)    
-    
+from plone.dexterity.interfaces import IDexterityContent
+     
 class VersionView(grok.View):
-    grok.context(Interface)
+    grok.context(IDexterityContent)
     grok.require('zope2.View')
     grok.name('version-view')
 
@@ -38,7 +22,7 @@ class VersionView(grok.View):
         )
 
 class DownloadVersion(grok.View):
-    grok.context(Interface)
+    grok.context(IDexterityContent)
     grok.require('zope2.View')
     grok.name('download-version')
     

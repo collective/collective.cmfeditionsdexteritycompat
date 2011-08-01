@@ -7,10 +7,11 @@
     
     <includeDependencies package="." />
     
+    <include package=".browser" />
 	<include file="profiles.zcml" />
 		  
     <cmf:registerDirectory name="collective_cmfeditionsdexteritycompat"/>
     
     <grok:grok package=".browser" />
-         
+    
 </configure>
