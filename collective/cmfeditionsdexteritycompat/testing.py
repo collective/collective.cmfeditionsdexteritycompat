@@ -17,9 +17,10 @@ class PackageLayer(PloneSandboxLayer):
         import collective.cmfeditionsdexteritycompat
         import plone.app.dexterity
         import plone.app.versioningbehavior
-        self.loadZCML(package=collective.cmfeditionsdexteritycompat)        
+        self.loadZCML(package=collective.cmfeditionsdexteritycompat)
         self.loadZCML(package=plone.app.dexterity)
         self.loadZCML(package=plone.app.versioningbehavior)
+        
 
     def setUpPloneSite(self, portal):
         self.applyProfile(portal, '%s:default' % PACKAGE_NAME)

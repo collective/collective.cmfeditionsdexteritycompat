@@ -1,13 +1,43 @@
 #coding=utf8
 from Products.CMFCore.utils import getToolByName
+from Products.Five.browser import BrowserView, BrowserView
+from collective.cmfeditionsdexteritycompat.testing import FUNCTIONAL_TESTING, TEST_CONTENT_TYPE_ID
+from mechanize import LinkNotFoundError
 from plone.app.testing import setRoles
 from plone.app.testing.interfaces import (TEST_USER_ID, TEST_USER_PASSWORD, TEST_USER_ROLES, 
     TEST_USER_NAME)
 from plone.testing.z2 import Browser
-from collective.cmfeditionsdexteritycompat.testing import FUNCTIONAL_TESTING, TEST_CONTENT_TYPE_ID
+from zExceptions import Unauthorized
+from zope.configuration import xmlconfig
 import transaction
 import unittest2 as unittest
-from mechanize import LinkNotFoundError
+
+class CustomView(BrowserView):
+    """
+    A custom view. It raises an `Unauthorized` when one tries to access the `macros` attrbiute, 
+    simulating what occurs with Grok based views.
+    """
+    
+    def __call__(self):
+        return '<div id="content-core">Custom view</div>'
+    
+    def __getattr__(self, name):
+        if name == 'macros':
+            raise Unauthorized
+        
+        raise AttributeError
+    
+VIEW_ZCML = """<configure 
+      xmlns="http://namespaces.zope.org/zope"
+      xmlns:browser="http://namespaces.zope.org/browser">
+
+    <browser:page
+          for="*"
+          name="custom-view"
+          permission="zope2.Public"
+          class="collective.cmfeditionsdexteritycompat.tests.test_functional.CustomView"
+    />
+</configure>"""
 
 class FunctionalTestCase(unittest.TestCase):
 
@@ -27,6 +57,7 @@ class FunctionalTestCase(unittest.TestCase):
             text=u'Object 1 some footext.',            
         )
         self.obj1 = self.portal['obj1']
+        self.test_content_type_fti = self.layer['test_content_type_fti']
     
     def _dump_to_file(self):
         f = open('/tmp/a.html', 'w')
@@ -83,23 +114,6 @@ class FunctionalTestCase(unittest.TestCase):
         
         self._assert_versions_history_form(0, self.obj1.getId(), old_title, old_text)
         self._assert_versions_history_form(1, self.obj1.getId(), new_title, new_text)
-
-    def _assert_versions_history_form(self, version_id, obj_id, title, text):
-        self.browser.open(
-            '%s/%s/versions_history_form?version_id=%s' % (self.portal_url, obj_id, version_id)
-        )
-        self.assertTrue('Working Copy' in self.browser.contents) 
-        self.assertTrue(
-            ('/%s/versions_history_form?version_id=%s' % (obj_id, version_id)) in self.browser.contents
-        )
-        self.assertTrue('Working Copy' in self.browser.contents) 
-        self.assertTrue('Revert to this revision' in self.browser.contents)
-        self.assertTrue(('/%s/version_diff?version_id1' % obj_id) in self.browser.contents)
-        self.assertTrue(('Preview of Revision %s' % version_id) in self.browser.contents)
-        self.assertTrue(
-            ('<h1 class="documentFirstHeading">%s</h1>' % str(title)) in self.browser.contents
-        )
-        self.assertTrue(str(text) in self.browser.contents)
     
     def test_versions_history_form_should_work_with_archetypes_content(self):
         old_text = self.obj1.text        
@@ -126,4 +140,37 @@ class FunctionalTestCase(unittest.TestCase):
                 
         self._assert_versions_history_form(0, page.getId(), old_title, old_text)
         self._assert_versions_history_form(1, page.getId(), new_title, new_text)
+    
+    def test_versions_history_form_should_work_with_dexterity_content_with_custom_view(self):
+        """
+        This test reproduce the following situation: a Dexterity content type has a custom default
+        view set up using Grok. This set up makes the `get_macros` skin script raise an 
+        `Unauthorized` error. 
         
+        To solve this we created a `get_macros_wrapper` script to handle the `Unauthorized`. This
+        test reproduce this situation to prevent regressions.
+        """
+        xmlconfig.string(s=VIEW_ZCML, context=self.layer['configurationContext'])        
+        old_default_view = self.test_content_type_fti.default_view
+        
+        self.test_content_type_fti.default_view = '@@custom-view'
+        self.test_versions_history_form_should_work_with_dexterity_content()
+        
+        self.test_content_type_fti.default_view = old_default_view
+
+    def _assert_versions_history_form(self, version_id, obj_id, title, text):
+        self.browser.open(
+            '%s/%s/versions_history_form?version_id=%s' % (self.portal_url, obj_id, version_id)
+        )
+        self.assertTrue('Working Copy' in self.browser.contents) 
+        self.assertTrue(
+            ('/%s/versions_history_form?version_id=%s' % (obj_id, version_id)) in self.browser.contents
+        )
+        self.assertTrue('Working Copy' in self.browser.contents) 
+        self.assertTrue('Revert to this revision' in self.browser.contents)
+        self.assertTrue(('/%s/version_diff?version_id1' % obj_id) in self.browser.contents)
+        self.assertTrue(('Preview of Revision %s' % version_id) in self.browser.contents)
+        self.assertTrue(
+            ('<h1 class="documentFirstHeading">%s</h1>' % str(title)) in self.browser.contents
+        )
+        self.assertTrue(str(text) in self.browser.contents)
