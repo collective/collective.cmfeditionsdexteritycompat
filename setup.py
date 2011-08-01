@@ -5,7 +5,7 @@ version = '0.1b6dev'
 
 setup(name='collective.cmfeditionsdexteritycompat',
       version=version,
-      description='',
+      description='Makes `Products.CMFEditions`_ works with `Dexterity` content types.',
       long_description=open(os.path.join("collective", "cmfeditionsdexteritycompat", "README.txt")).read() \
         + '\n\n'
         + open(os.path.join("docs", "HISTORY.txt")).read(),
