@@ -4,8 +4,8 @@ Changelog
 0.1b5 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Do not extract the "content-core" div from the default view HTML code anymore in "@@content-core".
+  Now we provide a default "@@content-core" based on the default views provided by Dexterity.
 
 0.1b4 (2011-08-01)
 ------------------
