@@ -2,12 +2,13 @@
 from .config import PACKAGE_NAME
 from Products.CMFCore.utils import getToolByName
 from Products.CMFDiffTool.TextDiff import TextDiff
-from Products.CMFEditions.setuphandlers import DEFAULT_POLICIES
 from plone.app.testing import (IntegrationTesting, FunctionalTesting, PLONE_FIXTURE, 
     PloneSandboxLayer)
 from plone.dexterity.fti import DexterityFTI
 
 TEST_CONTENT_TYPE_ID = 'TestContentType'
+
+DEFAULT_POLICIES = ('at_edit_autoversion', 'version_on_revert',)
 
 class PackageLayer(PloneSandboxLayer):
 

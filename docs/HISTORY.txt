@@ -4,7 +4,8 @@ Changelog
 0.1b6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Removed import of Products.CMFEditions.setuphandlers.DEFAULT_POLICIES make it compatibile with
+  Products.CMFEditions >= 2.1.0
 
 
 0.1b5 (2011-08-01)
