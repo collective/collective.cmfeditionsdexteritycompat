@@ -4,8 +4,7 @@ Changelog
 0.1b7 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Synced template override with CMFEditions trunk.
 
 0.1b6 (2011-08-19)
 ------------------
