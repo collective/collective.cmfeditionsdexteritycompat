@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1b7 (unreleased)
+0.1b7 (2011-08-22)
 ------------------
 
 - Synced template override with CMFEditions trunk.
