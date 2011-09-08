@@ -1,7 +1,7 @@
 Introduction
 ============
 
-This package makes `Products.CMFEditions`_ works with `Dexterity` content types.
+This package makes `Products.CMFEditions`_ works with `Dexterity`_ content types.
 
 In general CMFEditions works ok with Dexterity. The only problem is the ``versions_history_form``
 template: it does not show the older versions for Dexterity content items. Also, it may break if
