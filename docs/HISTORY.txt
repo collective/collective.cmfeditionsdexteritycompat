@@ -4,7 +4,8 @@ Changelog
 0.1b8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fixed failing test on Plone 4.1.6
+- Changed requirement from Plone to Products.CMFPlone
 
 
 0.1b7 (2011-08-22)

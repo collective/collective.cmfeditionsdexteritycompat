@@ -35,7 +35,7 @@ setup(name='collective.cmfeditionsdexteritycompat',
             'plone.app.testing',
             'plone.app.dexterity',
             'plone.app.versioningbehavior',
-            'Plone',
+            'Products.CMFPlone',
             'Products.CMFEditions',
             'Products.CMFDiffTool',            
             
