@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.2 (Unreleased)
+----------------
+
+- Merge this package into plone.app.versioningbehavior and it is
+  incompatible with plone.app.versioningbehavior >= 1.1.1.
+  [rpatterson]
+
+
 0.1b8 (2012-09-17)
 ------------------
 
